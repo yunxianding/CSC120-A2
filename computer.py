@@ -42,7 +42,7 @@ class Computer:
         print(f"Updating os to {new_os}.")
         self.operating_system = new_os
         print("Done.\n")
-
+        
 # testing
 # my_computer = Computer("2019 MacBook Pro", "Intel", 256, 16, "High Sierra", 2019, 1000)
 # my_computer.update_price(1000)

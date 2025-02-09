@@ -11,9 +11,9 @@ Listed below are various aspects of the assignment.  When you turn in your work,
 
 **YES** 1 pt: All expected attributes for `Computer` class are present
 
-____ 1 pt: All expected methods for `Computer` class are present
+**YES** 1 pt: All expected methods for `Computer` class are present
 
-____ 1 pt: Constructor for `Computer` class is present and sets attributes correctly
+**YES** 1 pt: Constructor for `Computer` class is present and sets attributes correctly
 
 ### Level 2 (3 pts)
 
