@@ -3,14 +3,14 @@ from computer import Computer
 class ResaleShop:
 
     # What attributes will it need?
-    # inventory
-    # item_id
+    inventory: list
+    item_id: int
 
     # How will you set up your constructor?
     # Remember: in python, all constructors have the same name (__init__)
     def __init__(self):
         """Initialize the attributes to run a ResaleShop"""
-        self.inventory = {}
+        self.inventory = []
         self.item_id = 0
 
     # What methods will you need?
