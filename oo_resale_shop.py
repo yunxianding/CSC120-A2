@@ -22,9 +22,10 @@ class ResaleShop:
         """Adds a new computer to inventory and returns its ID"""
         print("Buying", computer.description)
         print("Adding to inventory...")
-        self.inventory[self.item_id] = computer 
-        print("Added computer with ID:", self.item_id)
-        assigned_id = self.item_id
+        computer.item_id = self.item_id
+        self.inventory.append(computer)
+        assigned_id = self.item_id 
+        print("Added computer with ID:", assigned_id)
         self.item_id += 1
         print("Done.\n")
         return assigned_id
@@ -32,53 +33,69 @@ class ResaleShop:
     def sell(self, item_id: int):
         """Removes a computer from the inventory,
         print error message if not found"""
-        if item_id in self.inventory: 
-            self.inventory.pop(item_id) 
-            print("Selling computer with ID:", item_id)
-            print("Item", item_id, "sold!")
-        else: 
-            print("Item", item_id, "not found. Select another item to sell.")
+        for computer in self.inventory:
+            if computer.item_id == item_id:
+                self.inventory.remove(computer)
+                print("Selling computer with ID:", item_id)
+                print("Item", item_id, "sold!")
+                return
+        print("Item", item_id, "not found. Select another item to sell.")
 
     def refurbish(self, item_id: int, new_os: Optional[str] = None):
         """Refurbish a computer,assign a new price based on year,
         optionally update OS, print error message if not found"""
-        if item_id in self.inventory:
-            computer = self.inventory[item_id]
-            if computer.year_made < 2000:
-                computer.price = 0 
-            elif computer.year_made < 2012:
-                computer.price = 250 
-            elif computer.year_made < 2018:
-                computer.price = 550 
-            else:
-                computer.price = 1000
+        for computer in self.inventory:
+            if computer.item_id == item_id:
+                if computer.year_made < 2000:
+                    computer.update_price(0)  # Price is 0 for computers older than 2000
+                elif computer.year_made < 2012:
+                    computer.update_price(200)  # Price is 200 for computers made between 2000 and 2012
+                elif computer.year_made < 2018:
+                    computer.update_price(500)  # Price is 500 for computers made between 2012 and 2018
+                else:
+                    computer.update_price(1000)  # Price is 1000 for computers made after 2018
 
-            if new_os is not None:
-                computer.operating_system = new_os
-                print(f"Updated OS to {new_os}.")
+                if new_os is not None:
+                    computer.update_os(new_os)
+                    print(f"Updated OS to {new_os}.")
         
-            print(f"Computer with ID {item_id} refurbished. New price: {computer.price}")
-        else:
-            print("Item", item_id, "not found. Select another item to refurbish.")
+                print(f"Computer with ID {item_id} refurbished. New price: {computer.price}")
+                return
+        print("Item", item_id, "not found. Select another item to refurbish.")
 
     def print_inventory(self):
         """Print inventory, show error message when it's empty"""
         if not self.inventory: 
             print("No inventory to display.")
         else:
-            for item_id, computer in self.inventory.items(): 
-                print(f"Item ID: {item_id} : {computer.description}, Price: {computer.price}, OS: {computer.operating_system}")
+            for computer in self.inventory: 
+                print(f"Item ID: {computer.item_id} : {computer.description}, Price: {computer.price}, OS: {computer.operating_system}")
 
-# test
-# my_computer = Computer("MacBook Pro 2015", "Intel i7", 512, 16, "macOS Mojave", 2015, 1200)
-# shop = ResaleShop()
-# computer_id = shop.buy(my_computer)
-# shop.print_inventory()
-# shop.refurbish(computer_id, new_os="macOS Catalina")
-# shop.print_inventory()
-# shop.sell(0)
-# shop.print_inventory()
-# shop.sell(999)
-# shop.refurbish(999)
+if __name__ == "__main__":
+    my_computer = Computer("MacBook Pro 2015", "Intel i7", 512, 16, "macOS Mojave", 2015, 1200)
+    shop = ResaleShop()
+
+    # Test buying a computer
+    computer_id = shop.buy(my_computer)
+    shop.print_inventory()
+
+    # Test refurbishing a valid computer
+    shop.refurbish(computer_id, new_os="macOS Catalina")
+    shop.print_inventory()
+
+    # Test selling a valid computer
+    shop.sell(computer_id)
+    shop.print_inventory()
+
+    # Test selling an invalid computer
+    shop.sell(999)  # Invalid ID
+    shop.sell(-1)   # Negative ID
+
+    # Test refurbishing an invalid computer
+    shop.refurbish(999)  # Invalid ID
+    shop.refurbish(-1)   # Negative ID
+
+    # Test inventory when empty
+    shop.print_inventory()
 
 
